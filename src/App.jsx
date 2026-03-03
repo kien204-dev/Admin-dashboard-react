@@ -1,4 +1,4 @@
-import Layout from "./components/Layout";
+import MainLayout from "./layout/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
 import Login from "./pages/Login";
@@ -11,25 +11,23 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        {/* Trang login không có layout */}
         <Route path="/login" element={<Login />} />
 
-        {/* Các trang có layout */}
         <Route
           path="/dashboard"
           element={
-            <Layout username={username} title="Admin Dashboard">
+            <MainLayout username={username} title="Admin Dashboard">
               <Dashboard />
-            </Layout>
+            </MainLayout>
           }
         />
 
         <Route
           path="/users"
           element={
-            <Layout username={username} title="Admin Dashboard">
+            <MainLayout username={username} title="Admin Dashboard">
               <Users />
-            </Layout>
+            </MainLayout>
           }
         />
 

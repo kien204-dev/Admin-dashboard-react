@@ -1,8 +1,8 @@
 import React from "react";
-import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";
+import Sidebar from "./components/Sidebar";
+import Navbar from "./components/Navbar";
 
-function Layout({ children, username, title }) {
+function MainLayout({ children, username, title }) {
   return (
     <div style={{ display: "flex" }}>
       <Sidebar />
@@ -29,4 +29,4 @@ const styles = {
   }
 };
 
-export default Layout;
+export default MainLayout;
