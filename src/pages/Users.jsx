@@ -1,7 +1,7 @@
 function Users() {
   return (
     <div>
-      <h1>Users Page</h1>
+      <h1 className="text-2xl font-bold">Users Page</h1>
     </div>
   );
 }

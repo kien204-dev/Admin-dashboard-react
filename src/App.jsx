@@ -1,38 +1,36 @@
 import MainLayout from "./layout/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
+import Settings from "./pages/Settings";
 import Login from "./pages/Login";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Orders from "./pages/Order";
+
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   const username = "Kiên";
 
   return (
-    <BrowserRouter>
-      <Routes>
+    <Routes>
 
-        <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/dashboard"
-          element={
-            <MainLayout username={username} title="Admin Dashboard">
-              <Dashboard />
-            </MainLayout>
-          }
-        />
+      {/* Layout route */}
+      <Route
+        element={
+          <MainLayout username={username} title="Admin Dashboard" />
+        }
+      >
 
-        <Route
-          path="/users"
-          element={
-            <MainLayout username={username} title="Admin Dashboard">
-              <Users />
-            </MainLayout>
-          }
-        />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/settings" element={<Settings />} />
 
-      </Routes>
-    </BrowserRouter>
+      </Route>
+
+    </Routes>
   );
 }
 
