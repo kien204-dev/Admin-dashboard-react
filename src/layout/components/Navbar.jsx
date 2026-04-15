@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Navbar({ username, title, setSidebarOpen }) {
+
   const [open, setOpen] = useState(false);
   const menuRef = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -16,13 +19,20 @@ function Navbar({ username, title, setSidebarOpen }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
+
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
 
   return (
     <div className="bg-white px-3 md:px-6 py-3 shadow flex justify-between items-center">
 
       {/* Left */}
       <div className="flex items-center space-x-3">
+
         <button
           className="md:hidden text-2xl"
           onClick={() => setSidebarOpen(true)}
@@ -31,6 +41,7 @@ function Navbar({ username, title, setSidebarOpen }) {
         </button>
 
         <h1 className="text-lg font-bold">{title}</h1>
+
       </div>
 
       {/* Right */}
@@ -50,6 +61,7 @@ function Navbar({ username, title, setSidebarOpen }) {
         </div>
 
         <div className="relative" ref={menuRef}>
+
           <button
             onClick={() => setOpen(!open)}
             className="flex items-center space-x-2"
@@ -59,21 +71,30 @@ function Navbar({ username, title, setSidebarOpen }) {
             </div>
 
             <span className="hidden md:block">{username}</span>
+
           </button>
 
           {open && (
             <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg z-50">
+
               <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                 Profile
               </div>
+
               <div className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                 Settings
               </div>
-              <div className="px-4 py-2 hover:bg-red-100 text-red-500 cursor-pointer">
+
+              <div
+                onClick={handleLogout}
+                className="px-4 py-2 hover:bg-red-100 text-red-500 cursor-pointer"
+              >
                 Logout
               </div>
+
             </div>
           )}
+
         </div>
 
       </div>

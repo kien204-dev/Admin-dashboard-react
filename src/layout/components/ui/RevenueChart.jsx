@@ -9,12 +9,12 @@ import {
 } from "recharts";
 
 const data = [
-  { name: "Jan", revenue: 7000 },
-  { name: "Feb", revenue: 3000 },
-  { name: "Mar", revenue: 6000 },
-  { name: "Apr", revenue: 4000 },
-  { name: "May", revenue: 8000 },
-  { name: "Jun", revenue: 7000 }
+  { name: "Feb", Revenue: 3000 },
+  { name: "Jan", Revenue: 7000 },
+  { name: "Mar", Revenue: 6000 },
+  { name: "Apr", Revenue: 4000 },
+  { name: "May", Revenue: 8000 },
+  { name: "Jun", Revenue: 7000 }
 ];
 
 function RevenueChart() {
@@ -28,7 +28,7 @@ function RevenueChart() {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Line type="monotone" dataKey="revenue" stroke="#6366f1" strokeWidth={3} />
+          <Line type="monotone" dataKey="Revenue" stroke="#6366f1" strokeWidth={3} />
         </LineChart>
       </ResponsiveContainer>
     </div>
