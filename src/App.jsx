@@ -1,10 +1,9 @@
-// App.jsx
 import MainLayout from "./layout/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
-import Orders from "./pages/Order";
+import Orders from "./pages/Orders";
 import PrivateRoute from "./routes/PrivateRoute";
 import Register from "./pages/Register";
 import BookingForm from "./pages/BookingForm";
@@ -24,11 +23,13 @@ function App() {
       <Route path="/booking" element={<Booking />} />  {/* ← THÊM DÒNG NÀY */}
 
       {/* PROTECTED ROUTES */}
-       <Route element={<PrivateRoute />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/users" element={<Users />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/settings" element={<Settings />} />
+      <Route element={<PrivateRoute />}>
+        <Route element={<MainLayout username="Kiên" />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/settings" element={<Settings />} />
+        </Route>
       </Route>
     </Routes>
   );

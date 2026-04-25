@@ -4,45 +4,26 @@ export default {
   theme: {
     extend: {
       colors: {
-        "surface": "#f9f9fc",
-        "surface-dim": "#dadadc",
-        "surface-bright": "#f9f9fc",
-        "surface-container": "#eeeef0",
-        "surface-container-low": "#f3f3f6",
-        "surface-container-high": "#e8e8ea",
-        "surface-container-highest": "#e2e2e5",
-        "surface-container-lowest": "#ffffff",
-        "surface-variant": "#e2e2e5",
-        "on-surface": "#1a1c1e",
-        "on-surface-variant": "#444650",
-        "primary": "#00113a",
-        "primary-container": "#002366",
-        "on-primary": "#ffffff",
-        "on-primary-container": "#758dd5",
-        "inverse-primary": "#b3c5ff",
-        "secondary": "#775a19",
-        "secondary-container": "#fed488",
-        "on-secondary": "#ffffff",
-        "on-secondary-container": "#785a1a",
-        "tertiary": "#131514",
-        "tertiary-container": "#282928",
-        "on-tertiary": "#ffffff",
-        "outline": "#757682",
-        "outline-variant": "#c5c6d2",
-        "error": "#ba1a1a",
-        "on-error": "#ffffff",
-        "background": "#f9f9fc",
-        "on-background": "#1a1c1e",
-        "inverse-surface": "#2f3133",
-        "surface-tint": "#435b9f",
-      },
-      fontFamily: {
-        headline: ["Noto Serif", "serif"],
-        body: ["Manrope", "sans-serif"],
-        label: ["Manrope", "sans-serif"],
-        sans:  ["Manrope", "sans-serif"]
+        primary: "#818CF8",
+
+        "background-light": "#F9FAFB",
+        "background-dark": "#0B0E14",
+
+        "card-dark": "#161B26",
+        "border-dark": "#2D3748",
       },
     },
+
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+      },
+    fontFamily: {
+      headline: ["Noto Serif", "serif"],
+      body: ["Manrope", "sans-serif"],
+      label: ["Manrope", "sans-serif"],
+      sans: ["Manrope", "sans-serif"]
+    },
   },
-  plugins: [],
-};
+},
+plugins: [],
+}

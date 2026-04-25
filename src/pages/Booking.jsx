@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Đặt data ra ngoài component
 const destinations = [
@@ -65,6 +66,10 @@ const theme = {
 };
 function Booking() {
 
+    const navigate = useNavigate();
+
+    const [openSidebar, setOpenSidebar] = useState(false);
+
     const [page, setPage] = useState(0);
 
     const itemsPerPage = 3;
@@ -84,6 +89,93 @@ function Booking() {
 
         <div className="bg-surface font-body text-on-surface" style={{ minHeight: "max(884px, 100dvh)" }}>
 
+            <div
+                style={{
+                    position: "fixed",
+                    top: 0,
+                    left: openSidebar ? 0 : "-260px",
+                    width: "250px",
+                    height: "100vh",
+                    background: "#0b0e14",
+                    color: "#fff",
+                    padding: "20px",
+                    transition: "left 0.3s ease",
+                    zIndex: 1000,
+                }}
+            >
+                <h3 style={{ marginBottom: 20 }}>Menu</h3>
+
+                <p
+                    onClick={() => {
+                        navigate("/dashboard");
+                        setOpenSidebar(false);
+                    }}
+                    style={{ cursor: "pointer" }}
+                >
+                    Dashboard
+                </p>
+
+                <p
+                    onClick={() => {
+                        navigate("/bookings");
+                        setOpenSidebar(false);
+                    }}
+                    style={{ cursor: "pointer" }}
+                >
+                    Bookings
+                </p>
+
+                <p
+                    onClick={() => {
+                        navigate("/users");
+                        setOpenSidebar(false);
+                    }}
+                    style={{ cursor: "pointer" }}
+                >
+                    Users
+                </p>
+
+                <p
+                    onClick={() => {
+                        navigate("/settings");
+                        setOpenSidebar(false);
+                    }}
+                    style={{ cursor: "pointer" }}
+                >
+                    Settings
+                </p>
+
+                <button
+                    onClick={() => setOpenSidebar(false)}
+                    style={{
+                        marginTop: 20,
+                        padding: "8px 12px",
+                        background: "red",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: 6,
+                        cursor: "pointer",
+                    }}
+                >
+                    Close
+                </button>
+            </div>
+
+            {openSidebar && (
+                <div
+                    onClick={() => setOpenSidebar(false)}
+                    style={{
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        background: "rgba(0,0,0,0.4)",
+                        zIndex: 999,
+                    }}
+                />
+            )}
+
             {/* Glass Nav CSS */}
             <style>{`
         .glass-nav {
@@ -99,7 +191,12 @@ function Booking() {
             <header className="fixed top-0 w-full z-50 glass-nav shadow-sm">
                 <nav className="flex justify-between items-center px-8 py-4 max-w-full mx-auto">
                     <div className="flex items-center gap-4">
-                        <span className="material-symbols-outlined text-blue-900 cursor-pointer hover:scale-95 transition-transform duration-200">menu</span>
+                        <span
+                            className="material-symbols-outlined text-blue-900 cursor-pointer hover:scale-95 transition-transform duration-200"
+                            onClick={() => setOpenSidebar(true)}
+                        >
+                            menu
+                        </span>
                         <span className="text-2xl font-headline font-bold text-blue-900 tracking-tight">LuxeStay</span>
                     </div>
                     <div className="hidden md:flex items-center gap-12 font-label text-sm uppercase tracking-widest text-slate-500">

@@ -30,6 +30,16 @@ const users = [
   },
 ];
 
+app.get("/users", (req, res) => {
+  res.json(
+    users.map((u) => ({
+      id: u.id,
+      email: u.email,
+      role: u.role,
+    }))
+  );
+});
+
 // ✅ route test
 app.get("/", (req, res) => {
   res.send("API đang chạy 🚀");

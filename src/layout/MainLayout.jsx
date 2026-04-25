@@ -1,5 +1,6 @@
 import Navbar from "../layout/components/Navbar";
 import Sidebar from "../layout/components/Sidebar";
+import Orders from "../pages/Orders";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
@@ -16,15 +17,11 @@ function MainLayout({ username, title }) {
 
       <div className="flex flex-col min-h-screen w-full">
 
-        <Navbar
-          username={username}
-          title={title}
-          setSidebarOpen={setSidebarOpen}
-        />
-
-        <main className="p-3 md:p-6 flex-1 overflow-auto">
-          <Outlet />
-        </main>
+        <main className="flex-1 overflow-auto bg-[#0f172a] text-white">
+  <div >
+    <Outlet />
+  </div>
+</main>
 
       </div>
 

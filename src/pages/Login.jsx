@@ -151,6 +151,7 @@ function Login() {
               <div className="relative mt-2">
                 <input
                   type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
                   placeholder="••••••••"
                   className="w-full bg-[#192540] rounded-xl py-4 px-4 pr-12"
                   value={password}
