@@ -1,16 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Sidebar from "../layout/components/Sidebar";
 import Icon from "../utils/icon";
+import RevenueChart from "../layout/components/chart/RevenueChart";
+import OccupancyChart from "../layout/components/chart/OccupancyChart";
+import BookingStatusChart from "../layout/components/chart/BookingStatusChart";
+
 
 // ─── Static Data ──────────────────────────────────────────────────────────────
-const stats = [
-  { label: "Total Revenue", value: "$124,580", change: "+12.5%", up: true, icon: "Revenue", color: "#9fa7ff" },
-  { label: "Total Bookings", value: "1,284", change: "+8.2%", up: true, icon: "Booking", color: "#67e8b4" },
-  { label: "Active Users", value: "3,921", change: "+5.1%", up: true, icon: "Users", color: "#f9a8d4" },
-  { label: "Cancellations", value: "47", change: "-3.4%", up: false, icon: "Orders", color: "#fbbf24" },
+const bookingStatusData = [
+  { name: "Confirmed", value: 65 },
+  { name: "Pending", value: 20 },
+  { name: "Cancelled", value: 15 },
 ];
+
+const COLORS = ["#67e8b4", "#fbbf24", "#f87171"];
+
 
 const recentBookings = [
   { id: "#BK-0091", guest: "Nguyễn Văn A", room: "Deluxe Suite 401", checkIn: "Apr 15", checkOut: "Apr 18", status: "confirmed", amount: "$540" },
@@ -23,6 +29,12 @@ const recentBookings = [
 const occupancy = [65, 72, 58, 81, 76, 90, 84, 70, 88, 92, 79, 85];
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+const revenueData = [
+  12000, 15000, 18000, 22000,
+  25000, 27000, 30000, 28000,
+  32000, 35000, 37000, 40000
+];
+
 const statusStyle = {
   confirmed: { bg: "rgba(103,232,180,0.12)", color: "#67e8b4", label: "Confirmed" },
   pending: { bg: "rgba(251,191,36,0.12)", color: "#fbbf24", label: "Pending" },
@@ -30,34 +42,6 @@ const statusStyle = {
   cancelled: { bg: "rgba(248,113,113,0.12)", color: "#f87171", label: "Cancelled" },
 };
 
-// ─── Bar Chart ────────────────────────────────────────────────────────────────
-function BarChart() {
-
-  const location = useLocation();
-
-  const max = Math.max(...occupancy);
-  return (
-    <div style={{ display: "flex", alignItems: "flex-end", gap: 6, height: 108 }}>
-      {occupancy.map((v, i) => (
-        <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-          <div
-            title={`${months[i]}: ${v}%`}
-            style={{
-              width: "100%",
-              height: `${(v / max) * 90}px`,
-              background: i === 9
-                ? "linear-gradient(180deg,#9fa7ff,#6c77ff)"
-                : "rgba(159,167,255,0.18)",
-              borderRadius: 4,
-              cursor: "pointer",
-            }}
-          />
-          <span style={{ fontSize: 9, color: "#5a6480", fontFamily: "monospace" }}>{months[i]}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 // ─── Stat Card ────────────────────────────────────────────────────────────────
 function StatCard({ label, value, change, up, icon, color }) {
@@ -100,9 +84,95 @@ function StatCard({ label, value, change, up, icon, color }) {
 }
 
 export default function Dashboard() {
+
+const [users, setUsers] = useState([]);
+const [orders, setOrders] = useState([]);
+
+useEffect(() => {
+  const fakeData = () => {
+    return {
+      users: [{ id: 1 }, { id: 2 }, { id: 3 }],
+      orders: [
+        { amount: 200, status: "completed" },
+        { amount: 300, status: "completed" },
+        { amount: 100, status: "pending" },
+      ],
+    };
+  };
+  setUsers(data.users);
+  setOrders(data.orders);
+}, []);
+
+const totalUsers = users?.length || 0;
+const totalOrders = orders?.length || 0;
+const totalRevenue = (orders || [])
+  .filter(o => o.status === "completed")
+  .reduce((sum, o) => sum + o.amount, 0);
+
+  const stats = [
+  {
+    label: "Total Revenue",
+    value: totalRevenue.toLocaleString() + " ₫",
+    change: "+12.5%",
+    up: true,
+    icon: "Revenue",
+    color: "#9fa7ff",
+  },
+  {
+    label: "Total Orders",
+    value: totalOrders,
+    change: "+8.2%",
+    up: true,
+    icon: "Booking",
+    color: "#67e8b4",
+  },
+  {
+    label: "Users",
+    value: totalUsers,
+    change: "+5.1%",
+    up: true,
+    icon: "Users",
+    color: "#f9a8d4",
+  },
+];
+
+  const [bookingStatus, setBookingStatus] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fakeApi = () => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve([
+            { name: "Confirmed", value: 65 },
+            { name: "Pending", value: 20 },
+            { name: "Cancelled", value: 15 },
+          ]);
+        }, 1000);
+      });
+    };
+
+    fakeApi().then((data) => {
+      setBookingStatus(data);
+      setLoading(false);
+    });
+  }, []);
+
+  const data = {
+    labels: months,
+    datasets: [
+      {
+        label: "Doanh thu",
+        data: occupancy,
+        borderColor: "#9fa7ff",
+        backgroundColor: "rgba(159,167,255,0.2)",
+        tension: 0.4,
+        fill: true,
+      },
+    ],
+  };
+
   const navigate = useNavigate();
-
-
 
   const navItems = [
     { id: "dashboard", label: "Dashboard", icon: "Dashboard" },
@@ -125,8 +195,8 @@ export default function Dashboard() {
       </div>
 
       {/* ── Sidebar ── */}
-     
-<Sidebar Icon={Icon} />
+
+      <Sidebar Icon={Icon} />
       {/* ── Main Content ── */}
       <main style={{ flex: 1, padding: "28px 32px", marginLeft: 240, overflowY: "auto", position: "relative", zIndex: 1 }}>
 
@@ -161,46 +231,45 @@ export default function Dashboard() {
           {stats.map((s) => <StatCard key={s.label} {...s} />)}
         </div>
 
-        {/* Chart + Room Status */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 300px", gap: 16, marginBottom: 24 }}>
-
+        {/* Chart Section */}
+        <div style={{
+          background: "rgba(25,37,64,0.6)",
+          border: "1px solid rgba(64,72,93,0.3)",
+          borderRadius: 16,
+          padding: "24px 28px",
+          backdropFilter: "blur(16px)",
+          marginBottom: 24,
+        }}>
+          {/* Header */}
           <div style={{
-            background: "rgba(25,37,64,0.6)",
-            border: "1px solid rgba(64,72,93,0.3)",
-            borderRadius: 16, padding: 24, backdropFilter: "blur(16px)",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            marginBottom: 20,
           }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-              <div>
-                <h2 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#dee5ff" }}>Room Occupancy</h2>
-                <p style={{ margin: "2px 0 0", fontSize: 12, color: "#5a6480" }}>Monthly rate — 2026</p>
-              </div>
-              <span style={{ padding: "4px 12px", borderRadius: 20, background: "rgba(103,232,180,0.12)", color: "#67e8b4", fontSize: 12, fontWeight: 600 }}>Avg 78%</span>
+            <div>
+              <h2 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#dee5ff" }}>
+                Room Occupancy
+              </h2>
+              <p style={{ margin: "4px 0 0", color: "#5a6480", fontSize: 12 }}>
+                Monthly rate — 2026
+              </p>
             </div>
-            <BarChart />
+            <span style={{
+              padding: "6px 14px",
+              borderRadius: 20,
+              background: "rgba(103,232,180,0.12)",
+              color: "#67e8b4",
+              fontSize: 12,
+              fontWeight: 600,
+            }}>
+              Avg 78%
+            </span>
           </div>
 
-          <div style={{
-            background: "rgba(25,37,64,0.6)",
-            border: "1px solid rgba(64,72,93,0.3)",
-            borderRadius: 16, padding: 24, backdropFilter: "blur(16px)",
-          }}>
-            <h2 style={{ margin: "0 0 18px", fontSize: 15, fontWeight: 700, color: "#dee5ff" }}>Room Status</h2>
-            {[
-              { label: "Occupied", count: 64, color: "#9fa7ff", pct: 64 },
-              { label: "Available", count: 22, color: "#67e8b4", pct: 22 },
-              { label: "Maintenance", count: 8, color: "#fbbf24", pct: 8 },
-              { label: "Reserved", count: 6, color: "#f9a8d4", pct: 6 },
-            ].map(({ label, count, color, pct }) => (
-              <div key={label} style={{ marginBottom: 16 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                  <span style={{ fontSize: 12, color: "#a3aac4" }}>{label}</span>
-                  <span style={{ fontSize: 12, color, fontWeight: 600 }}>{count}</span>
-                </div>
-                <div style={{ height: 5, borderRadius: 4, background: "rgba(64,72,93,0.4)" }}>
-                  <div style={{ width: `${pct}%`, height: "100%", borderRadius: 4, background: color, opacity: 0.85 }} />
-                </div>
-              </div>
-            ))}
+          {/* LINE CHART */}
+          <div style={{ height: 240 }}>
+            <OccupancyChart />
           </div>
         </div>
 
@@ -255,6 +324,64 @@ export default function Dashboard() {
             </table>
           </div>
         </div>
+        <div style={{
+
+          marginTop: 24,
+          background: "rgba(25,37,64,0.6)",
+          border: "1px solid rgba(64,72,93,0.3)",
+          borderRadius: 16,
+          padding: 24,
+        }}>
+          <div style={{ marginBottom: 12 }}>
+            <h3 style={{ fontSize: 14, fontWeight: 700, color: "#dee5ff" }}>
+              Revenue Overview
+            </h3>
+          </div>
+          <RevenueChart data={revenueData} labels={months} />
+        </div>
+          <div style={{
+            marginTop: 20,
+            background: "rgba(25,37,64,0.6)",
+            border: "1px solid rgba(64,72,93,0.3)",
+            borderRadius: 16,
+            padding: 20,
+          }}>
+            <div style={{ marginBottom: 12 }}>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: "#dee5ff" }}>
+                Booking Status
+              </h3>
+            </div>
+
+            {loading ? (
+              <p>Loading chart...</p>
+            ) : (
+              <BookingStatusChart data={bookingStatus} />
+            )}
+          </div>
+          <div style={{ marginTop: 10 }}>
+            {bookingStatusData.length > 0 && bookingStatusData.map((item, index) => (
+              <div key={item.name} style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: 6,
+                fontSize: 13,
+                color: "#a3aac4"
+              }}>
+                <span>
+                  <span style={{
+                    display: "inline-block",
+                    width: 10,
+                    height: 10,
+                    borderRadius: "50%",
+                    background: COLORS[index],
+                    marginRight: 6
+                  }} />
+                  {item.name}
+                </span>
+                <span>{item.value}%</span>
+              </div>
+            ))}
+          </div>
       </main>
     </div>
   );
