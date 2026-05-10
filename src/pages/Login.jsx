@@ -65,6 +65,8 @@ function Login() {
 
       console.log("USER:", res.data.user); // debug
 
+      localStorage.setItem("token", res.data.token);
+
       login(res.data.user);
 
       // 🔥 FIX Ở ĐÂY
